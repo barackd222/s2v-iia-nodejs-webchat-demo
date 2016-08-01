@@ -8,7 +8,7 @@ To run it:
 2. npm install
 3. Ooen file: public/js/chat.js and search for the following variables:
 
- 	     var globalIPAddress = 
+ 		var globalIPAddress = 
 		var globalPort = 
 	
 	Update the values with the IP address and Port of the server running the Sphero Node APIs (see my repository s2v-iia-sphero-node)
