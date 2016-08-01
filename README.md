@@ -5,7 +5,7 @@ This webchat is based on Node.JS socket.io - It integrates with Gravatar, respon
 To run it:
 
 1. Clone or download Zip file
-2. npm install
+2. Install the dependent modules: npm install
 3. Open the file: public/js/chat.js and search for the following variables:
 
  		var globalIPAddress = 
@@ -18,7 +18,7 @@ To run it:
 		var globalIPAddress = "10.0.0.97";
 		var globalPort = "3001";
 
-4. Install the dependent modules: node app.js
+4. Run the Web chat Nonde.JS server: node app.js
 5. Open a browser and go to http://IP:8080
 6. In the browser enter a nickname and email - Ideally use an account that has a Gravatar account, so that it can integrate with it and use your picture, rather than a grey faceless man.
 7. Once you create a private room, it will give you a unique id, give it to a friend (make sure the IP address is accessible by your friend) and ask him to enter a nickname and email as well.
