@@ -2,6 +2,10 @@
 
 $(function () {
 
+	// Initiating XMLHttpRequest Object:
+	var http_request = initiateXMLHttpObject();
+
+
 	// getting the id of the room from the url
 	var id = Number(window.location.pathname.match(/\/chat\/(\d+)$/)[1]);
 
@@ -170,23 +174,31 @@ $(function () {
 		showMessage('chatStarted');
 
 		if (data.msg.trim().length) {
+
+			// Send chat message:
 			createChatMessage(data.msg, data.user, data.img, moment());
 			scrollToBottom();
 
 			// Call S2V-IIA-Extension Modules:
 			// Integrating to TTS:
-			responsiveVoice.speak(data.msg), "UK English Female";
+			var action = [];
 
-			var msg = processMessage(data.user, data.msg);
+			responsiveVoice.speak(data.msg), "UK English Female";
+			processMessage(data.user, data.msg, action);
 
 			//alert("Msg is [" + msg + "]");
 
-			if (msg != "") {
-				responsiveVoice.speak(msg, "UK English Male");
+			if (action.length > 0) {
+
+				responsiveVoice.speak(action[0], "UK English Male");
+
+				setTimeout(function () {
+					alert("API called [" + action[1] + "]");
+					sendRequest(http_request, "POST", action[1], true);
+
+				}, 7000);//Wait 7 seconds before showing up the alert message, to allow the UK English male to talk! 
+
 			}
-
-
-
 		}
 	});
 
@@ -349,9 +361,13 @@ $(function () {
 		}
 	}
 
-	function processMessage(name, message) {
+	function processMessage(name, message, action) {
 
 		//alert("Processing a amessage");
+
+		var globalIPAddress = "10.0.0.97";
+		var globalPort = "3001";
+
 
 		var SPHERO = "Sphero ",
 			shape = "",
@@ -376,7 +392,7 @@ $(function () {
 
 				shape = "square";
 
-			} else if (message.search(/TRINAGLE/i) != -1) {
+			} else if (message.search(/TRIANGLE/i) != -1) {
 
 				shape = "triangle";
 
@@ -409,19 +425,53 @@ $(function () {
 
 			if (shape != "" && colour != "") {
 
-				return "No worries " + name + ", I'll ask the Sphero to make a " + shape + " and turn " + colour;
+				action[0] = "No worries " + name + ", I'll ask the Sphero to make a " + shape + " and turn " + colour;
+				action[1] = "http://" + globalIPAddress + ":" + globalPort + "/sphero/shape/" + shape + "/color/" + colour;// Sphero make shape and set colour API!
 
-			} else
-				return "";
+			} else if (shape == "" && colour != "") {
 
+				action[0] = "No worries " + name + ", I'll ask the Sphero to turn " + colour;
+				action[1] = "http://" + globalIPAddress + ":" + globalPort + "/sphero/color/" + colour;// Sphero set colour API!
 
-		} else
+			}
+		}
+	}
 
+	function sendRequest(http_request, verb, uri, async) {
 
-			return "";
+		//alert("Debugging on: Sending [" + uri + "] under verb [" + verb + "]");
 
+		http_request.open(verb, uri, async);
+		http_request.setRequestHeader("Accept", "application/json");
+		http_request.send();
 
+		//alert("Your message was sent successfully.");
+	}
 
+	function initiateXMLHttpObject() {
+
+		// Initiating XMLHttpRequest Object:
+		var http_request;
+
+		try {
+			// Opera 8.0+, Firefox, Chrome, Safari
+			http_request = new XMLHttpRequest();
+		} catch (e) {
+			// Internet Explorer Browsers
+			try {
+				http_request = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				try {
+					http_request = new ActiveXObject("Microsoft.XMLHTTP");
+				} catch (e) {
+					// Something went wrong
+					alert("Your browser broke!");
+					return false;
+				}
+			}
+		}
+
+		return http_request;
 	}
 
 });
