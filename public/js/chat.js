@@ -365,7 +365,7 @@ $(function () {
 
 		//alert("Processing a amessage");
 
-		var globalIPAddress = "10.0.0.97";
+		var globalIPAddress = "192.168.1.76";
 		var globalPort = "3001";
 
 
@@ -425,12 +425,12 @@ $(function () {
 
 			if (shape != "" && colour != "") {
 
-				action[0] = "No worries " + name + ", I'll ask the Sphero to make a " + shape + " and turn " + colour;
+				action[0] = "No worries " + name + ", I'll make a " + shape + " and turn " + colour;
 				action[1] = "http://" + globalIPAddress + ":" + globalPort + "/sphero/shape/" + shape + "/color/" + colour;// Sphero make shape and set colour API!
 
 			} else if (shape == "" && colour != "") {
 
-				action[0] = "No worries " + name + ", I'll ask the Sphero to turn " + colour;
+				action[0] = "No worries " + name + ", I'll turn " + colour;
 				action[1] = "http://" + globalIPAddress + ":" + globalPort + "/sphero/color/" + colour;// Sphero set colour API!
 
 			}
