@@ -183,7 +183,7 @@ $(function () {
 			// Integrating to TTS:
 			var action = [];
 
-			responsiveVoice.speak(data.msg), "UK English Female";
+			responsiveVoice.speak((data.msg), "UK English Female");
 			processMessage(data.user, data.msg, action);
 
 			//alert("Msg is [" + msg + "]");
@@ -365,7 +365,10 @@ $(function () {
 
 		//alert("Processing a amessage");
 
-		var globalIPAddress = "192.168.1.76";
+//		var globalIPAddress = "192.168.1.76";
+//		var globalIPAddress = "10.0.0.97";
+		var globalIPAddress = "accs.oraclecloud.com";
+
 		var globalPort = "3001";
 
 
